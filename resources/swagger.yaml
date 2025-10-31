@@ -1,0 +1,186 @@
+openapi: 3.0.3
+info:
+  title: API - Sistema de Agendamento de Marido de Aluguel
+  description: API RESTful para agendamento de serviços de marido de aluguel, com autenticação JWT.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /auth/login:
+    post:
+      summary: Realiza login e retorna um token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Token JWT gerado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Credenciais inválidas
+  /servicos:
+    get:
+      summary: Lista todos os serviços cadastrados
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de serviços
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Servico'
+        '401':
+          description: Token JWT ausente ou inválido
+    post:
+      summary: Cadastra um novo serviço
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServicoInput'
+      responses:
+        '201':
+          description: Serviço criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+        '400':
+          description: Dados inválidos
+        '401':
+          description: Token JWT ausente ou inválido
+  /servicos/{id}:
+    get:
+      summary: Busca um serviço pelo ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Serviço encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+        '404':
+          description: Serviço não encontrado
+        '401':
+          description: Token JWT ausente ou inválido
+    put:
+      summary: Atualiza um serviço existente
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServicoInput'
+      responses:
+        '200':
+          description: Serviço atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Serviço não encontrado
+        '401':
+          description: Token JWT ausente ou inválido
+    delete:
+      summary: Remove um serviço
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Serviço removido com sucesso
+        '404':
+          description: Serviço não encontrado
+        '401':
+          description: Token JWT ausente ou inválido
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Servico:
+      type: object
+      properties:
+        id:
+          type: string
+        cliente:
+          type: string
+        descricao:
+          type: string
+        data:
+          type: string
+          format: date
+        status:
+          type: string
+      required:
+        - id
+        - cliente
+        - descricao
+        - data
+        - status
+    ServicoInput:
+      type: object
+      properties:
+        cliente:
+          type: string
+        descricao:
+          type: string
+        data:
+          type: string
+          format: date
+        status:
+          type: string
+      required:
+        - cliente
+        - descricao
+        - data
+        - status
