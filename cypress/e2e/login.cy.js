@@ -1,6 +1,29 @@
 describe('Login flow', () => {
+  /*it.only('exibe erro ao tentar login com dados inválidos', () => {
+    const slow = 1000;
+    // Mock do login com erro
+    cy.intercept('POST', '/api/auth/login', {
+      statusCode: 401,
+      body: { message: 'Usuário ou senha inválidos.' }
+    }).as('loginInvalido');
+
+    // Preenche o formulário de login com dados inválidos
+    cy.get('#login-form input[name=username]', { timeout: 10000 }).type('usuario-invalido');
+    cy.wait(slow);
+    cy.get('#login-form input[name=password]', { timeout: 10000 }).type('senha-errada');
+    cy.wait(slow);
+    cy.get('#login-form button[type="submit"]', { timeout: 10000 }).contains('Entrar').click();
+    cy.wait('@loginInvalido');
+    cy.wait(slow);
+
+    // Verifica se a mensagem de erro é exibida
+    cy.get('#error-message', { timeout: 10000 }).should('be.visible').and('contain', 'Usuário ou senha inválidos');
+  });
+*/
+
   beforeEach(() => {
     cy.visit('/');
+
   });
 
   it('successfully logs in and shows main UI (mocked)', () => {
@@ -13,6 +36,7 @@ describe('Login flow', () => {
     // USAR CREDENCIAIS VÁLIDAS JÁ QUE O MOCK É 200
     cy.get("input[name=username]").first().type('usuario-valido');
     cy.get("input[name=password]").first().type('senha-valida');
+    //cy.screenshot('antes de clicar em entrar')
     cy.get('button').contains('Entrar').click();
 
     // DEVE ESTAR DESCOMENTADO para garantir que a requisição de login ocorreu
