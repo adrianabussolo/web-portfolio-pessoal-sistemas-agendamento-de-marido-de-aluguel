@@ -1,4 +1,7 @@
+
+console.log("app.js carregado");
 let jwtToken = null;
+
 
 function showError(message) {
   const errorDiv = document.getElementById('error-message');
@@ -29,26 +32,11 @@ function showAuth() {
         <button class="button is-primary" type="submit">Entrar</button>
       </form>
     </div>
-    <div class="box">
-      <h2 class="subtitle">Cadastro de Usuário</h2>
-      <form id="register-form">
-        <div class="field">
-          <label class="label">Usuário</label>
-          <div class="control">
-            <input class="input" type="text" name="username" required>
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Senha</label>
-          <div class="control">
-            <input class="input" type="password" name="password" required>
-          </div>
-        </div>
-        <button class="button is-link" type="submit">Cadastrar</button>
-      </form>
-    </div>
   `;
+  
   document.getElementById('main-section').style.display = 'none';
+  
+  // Lógica de submissão do LOGIN
   document.getElementById('login-form').onsubmit = async (e) => {
     e.preventDefault();
     hideError();
@@ -72,27 +60,8 @@ function showAuth() {
       showError(err.message);
     }
   };
-  document.getElementById('register-form').onsubmit = async (e) => {
-    e.preventDefault();
-    hideError();
-    const form = e.target;
-    const username = form.username.value;
-    const password = form.password.value;
-    try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || 'Falha no cadastro');
-      }
-      showError('Usuário cadastrado com sucesso! Faça login.');
-    } catch (err) {
-      showError(err.message);
-    }
-  };
+  
+  // A LÓGICA de submissão do formulário 'register-form' (que estava comentada) foi removida.
 }
 
 function showMain() {

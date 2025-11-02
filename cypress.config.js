@@ -7,5 +7,11 @@ module.exports = defineConfig({
       // implement node event listeners here if needed
     },
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}'
+
+   
   },
+
+   
 });
+
+
