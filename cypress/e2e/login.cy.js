@@ -1,25 +1,3 @@
-describe('Login flow', () => {
-  /*it.only('exibe erro ao tentar login com dados inválidos', () => {
-    const slow = 1000;
-    // Mock do login com erro
-    cy.intercept('POST', '/api/auth/login', {
-      statusCode: 401,
-      body: { message: 'Usuário ou senha inválidos.' }
-    }).as('loginInvalido');
-
-    // Preenche o formulário de login com dados inválidos
-    cy.get('#login-form input[name=username]', { timeout: 10000 }).type('usuario-invalido');
-    cy.wait(slow);
-    cy.get('#login-form input[name=password]', { timeout: 10000 }).type('senha-errada');
-    cy.wait(slow);
-    cy.get('#login-form button[type="submit"]', { timeout: 10000 }).contains('Entrar').click();
-    cy.wait('@loginInvalido');
-    cy.wait(slow);
-
-    // Verifica se a mensagem de erro é exibida
-    cy.get('#error-message', { timeout: 10000 }).should('be.visible').and('contain', 'Usuário ou senha inválidos');
-  });
-*/
 
   beforeEach(() => {
     cy.visit('/');
@@ -99,7 +77,7 @@ describe('Login flow', () => {
     cy.contains('Cliente Teste').should('be.visible');
     cy.contains('Teste de Cypress').should('be.visible');
   });
-});
+
 
 
 

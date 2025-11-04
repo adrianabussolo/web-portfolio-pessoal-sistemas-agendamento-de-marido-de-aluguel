@@ -1,9 +1,33 @@
+## Testes de carga com k6
+
+
+1. Instale o k6:
+   - Siga as instruções oficiais: https://grafana.com/docs/k6/latest/using-k6/installation/
+
+2. Execute os testes usando o terminal Git Bash:
+   ```bash
+   k6 run tests/login.test.js
+   ```
+
+3. Para gerar o dashboard web:
+   ```bash
+   K6_WEB_DASHBOARD=true k6 run tests/login.test.js
+   ```
+
+### Exemplo de payload para login
+```json
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+Endpoint: `POST http://localhost:3000/auth/login`
 # Sistema de Agendamento de Marido de Aluguel
 
 Aplicação web para agendamento de serviços de marido de aluguel.
 
 ## Funcionalidades
-- Cadastro e login de usuários (JWT)
+- Login de usuários (JWT)
 - Cadastro e listagem de serviços
 - Integração com API backend (definida em `resources/swagger.yaml`)
 - Documentação interativa via Swagger UI
@@ -19,11 +43,12 @@ Aplicação web para agendamento de serviços de marido de aluguel.
    ```
    npm start
    ```
-3. Acesse em [http://localhost:4000](http://localhost:4000)
 
+Acesse em [http://localhost:4000](http://localhost:4000)
 A API backend deve estar rodando em [http://localhost:3000](http://localhost:3000).
 
 Acesse a documentação da API em [http://localhost:4000/docs](http://localhost:4000/docs)
+
 
 ## Testes end-to-end com Cypress
 
