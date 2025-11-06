@@ -49,6 +49,22 @@ A API backend deve estar rodando em [http://localhost:3000](http://localhost:300
 
 Acesse a documentação da API em [http://localhost:4000/docs](http://localhost:4000/docs)
 
+Acesse a documentação Swagger em http://localhost:3000/api-docs:
+
+Login:
+
+<img width="724" height="637" alt="image" src="https://github.com/user-attachments/assets/7e38ecd4-4ba3-43e8-93cc-84212795d6ec" />
+
+
+
+
+
+
+<img width="730" height="581" alt="image" src="https://github.com/user-attachments/assets/b7c71dd7-2d7e-4e8a-b354-89a13e55b894" />
+
+
+
+
 
 ## Testes end-to-end com Cypress
 
