@@ -87,6 +87,11 @@ npm run cy:open
 ```powershell
 npm run cy:run
 ```
+Coleção Postman
+Baixar coleção do Postman
+
+Importe este arquivo no Postman para testar rapidamente os endpoints da API.
+
 
 Observações:
 - Os testes esperam que a aplicação web esteja rodando em `http://localhost:4000`.
