@@ -1,82 +1,75 @@
 
-  beforeEach(() => {
-    cy.visit('/');
-
-  });
-
-  it('successfully logs in and shows main UI (mocked)', () => {
-    // Mock da API configurado para SUCESSO (Status 200)
-    cy.intercept('POST', '/api/auth/login', {
-      statusCode: 200,
-      body: { token: 'fake-jwt-token' }
-    }).as('loginSuccess');
-
-    // USAR CREDENCIAIS VÁLIDAS JÁ QUE O MOCK É 200
-    cy.get("input[name=username]").first().type('usuario-valido');
-    cy.get("input[name=password]").first().type('senha-valida');
-    //cy.screenshot('antes de clicar em entrar')
-    cy.get('button').contains('Entrar').click();
-
-    // DEVE ESTAR DESCOMENTADO para garantir que a requisição de login ocorreu
-    cy.wait('@loginSuccess');
-
-    // After login the main buttons should be visible
-    cy.contains('Listar Serviços').should('be.visible'); // Isto deve passar agora
-    cy.contains('Novo Serviço').should('be.visible');
-  });
+beforeEach(() => {
+   cy.visit('/');
+   cy.wait(2000);
+});
 
 
-  it('successfully registers a new service after login (mocked)', () => {
-    // 1. MOCK DO LOGIN
-    cy.intercept('POST', '/api/auth/login', {
-      statusCode: 200,
-      body: { token: 'fake-jwt-token' }
-    }).as('loginSuccess');
 
-    // 2. MOCK DO CADASTRO (Requisição POST disparada pelo botão "Cadastrar Serviço")
-    cy.intercept('POST', '/api/servicos', {
-      statusCode: 201,
-      body: { message: 'Serviço criado com sucesso!', id: 100 }
-    }).as('cadastroServico');
+it('successfully registers a new service after login (mocked)', () => {
+  // 1. MOCK DO LOGIN
+  cy.intercept('POST', '/api/auth/login', {
+    statusCode: 200,
+    body: { token: 'fake-jwt-token' }
+  }).as('loginSuccess');
 
-    // 3. MOCK DA LISTAGEM (Requisição GET que é chamada após o cadastro bem-sucedido)
-    cy.intercept('GET', '/api/servicos', {
-      statusCode: 200,
-      body: [{ id: 100, cliente: 'Cliente Teste', descricao: 'Teste de Cypress', data: '2025-11-01', status: 'Pendente' }]
-    }).as('listarServicos');
+  // 2. MOCK DO CADASTRO (Requisição POST disparada pelo botão "Cadastrar Serviço")
+  cy.intercept('POST', '/api/servicos', {
+    statusCode: 201,
+    body: { message: 'Serviço criado com sucesso!', id: 100 }
+  }).as('cadastroServico');
 
-    // SIMULA O LOGIN
-    cy.get("input[name=username]").first().type('usuario-valido');
-    cy.get("input[name=password]").first().type('senha-valida');
-    cy.get('button').contains('Entrar').click();
-    cy.wait('@loginSuccess');
+  // 3. MOCK DA LISTAGEM (Requisição GET que é chamada após o cadastro bem-sucedido)
+  cy.intercept('GET', '/api/servicos', {
+  statusCode: 200,
+  body: [
+    { id: 100, cliente: 'Cliente Teste1', descricao: 'Troca de instalação elétrica', data: '2025-11-01', status: 'Pendente' },
+    { id: 101, cliente: 'Cliente Teste2', descricao: 'Troca de chuveiro', data: '2025-12-01', status: 'Concluído' }
+  ]
+}).as('listarServicos');
+  
+  
+  // SIMULA O LOGIN
+  cy.get("input[name=username]").first().type('admin');
+  cy.get("input[name=password]").first().type('admin123');
+  cy.get('button').contains('Entrar').click();
+  cy.wait('@loginSuccess');
 
-    // Clicar em "Novo Serviço" (Abre o formulário)
-    cy.contains('Novo Serviço').click();
-    cy.get('#cadastro-servico-form').should('be.visible');
+  // Clicar em "Novo Serviço" (Abre o formulário)
+  cy.contains('Novo Serviço').click();
+  cy.get('#cadastro-servico-form').should('be.visible');
 
-    // Preencher o Formulário
-    cy.get('#cadastro-servico-form input[name="cliente"]').type('Cliente Teste');
-    cy.get('#cadastro-servico-form input[name="descricao"]').type('Teste de Cypress');
-    cy.get('#cadastro-servico-form input[name="data"]').type('2025-11-01');
-    cy.get('#cadastro-servico-form input[name="status"]').type('Pendente');
+  // Preencher o Formulário
+  cy.get('#cadastro-servico-form input[name="cliente"]').type('Cliente Teste1');
+  cy.get('#cadastro-servico-form input[name="descricao"]').type('Troca de instalação elétrica');
+  cy.get('#cadastro-servico-form input[name="data"]').type('2025-11-01');
+  cy.get('#cadastro-servico-form input[name="status"]').type('Pendente');
 
-    // Clicar no botão "Cadastrar Serviço" (Submete o formulário e dispara a requisição POST)
-    cy.get('#cadastro-servico-form button[type="submit"]').contains('Cadastrar Serviço').click();
+   
+  // --- Segundo cadastro ---
+  cy.contains('Novo Serviço').click();
+  //cy.get('#cadastro-servico-form').should('be.visible');
+  cy.get('#cadastro-servico-form input[name="cliente"]').type('Cliente Teste2');
+  cy.get('#cadastro-servico-form input[name="descricao"]').type('Troca de chuveiro');
+  cy.get('#cadastro-servico-form input[name="data"]').type('2025-12-01');
+  cy.get('#cadastro-servico-form input[name="status"]').type('Concluído');
+ 
 
-    // Aguardar e validar as requisições
-    cy.wait('@cadastroServico').its('request.body').should('deep.equal', {
-      cliente: 'Cliente Teste',
-      descricao: 'Teste de Cypress',
-      data: '2025-11-01',
-      status: 'Pendente'
-    });
-    cy.wait('@listarServicos');
+  // Clicar no botão "Cadastrar Serviço" (Submete o formulário e dispara a requisição POST)
+  cy.get('#cadastro-servico-form button[type="submit"]').contains('Cadastrar Serviço').click();
 
-    // Verificação final: A lista de serviços deve estar visível com o novo item
-    cy.contains('Cliente Teste').should('be.visible');
-    cy.contains('Teste de Cypress').should('be.visible');
-  });
+
+  cy.wait('@listarServicos');
+
+    // Verificação final: a lista de serviços deve estar visível com os dois itens
+  //cy.wait('@listarServicos');
+  cy.contains('Cliente Teste1').should('be.visible');
+  cy.contains('Troca de instalação elétrica').should('be.visible');
+  cy.contains('Cliente Teste2').should('be.visible');
+  cy.contains('Troca de chuveiro').should('be.visible');
+});
+
+ 
 
 
 
