@@ -52,6 +52,24 @@ A API backend deve estar rodando em [http://localhost:3000](http://localhost:300
 
 Acesse a documentação da API em [http://localhost:4000/docs](http://localhost:4000/docs)
 
+Acesse a documentação Swagger em http://localhost:3000/api-docs:
+
+Login:
+
+<img width="724" height="637" alt="image" src="https://github.com/user-attachments/assets/7e38ecd4-4ba3-43e8-93cc-84212795d6ec" />
+
+
+
+
+
+
+<img width="730" height="581" alt="image" src="https://github.com/user-attachments/assets/b7c71dd7-2d7e-4e8a-b354-89a13e55b894" />
+
+
+<img width="1047" height="597" alt="image" src="https://github.com/user-attachments/assets/07992be8-8fdc-4bdb-a9a3-bcf059417b2a" />
+
+
+
 
 ## Testes end-to-end com Cypress
 
@@ -72,6 +90,8 @@ npm run cy:open
 ```powershell
 npm run cy:run
 ```
+Coleção Postman
+<img width="927" height="523" alt="image" src="https://github.com/user-attachments/assets/53e5a3af-645a-4649-ba30-ce0807650954" />
 
 Observações:
 - Os testes esperam que a aplicação web esteja rodando em `http://localhost:4000`.
