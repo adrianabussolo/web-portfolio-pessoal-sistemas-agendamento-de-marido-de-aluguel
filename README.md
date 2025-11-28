@@ -88,10 +88,7 @@ npm run cy:open
 npm run cy:run
 ```
 Coleção Postman
-Baixar coleção do Postman
-
-Importe este arquivo no Postman para testar rapidamente os endpoints da API.
-
+<img width="927" height="523" alt="image" src="https://github.com/user-attachments/assets/53e5a3af-645a-4649-ba30-ce0807650954" />
 
 Observações:
 - Os testes esperam que a aplicação web esteja rodando em `http://localhost:4000`.
