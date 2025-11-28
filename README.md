@@ -1,3 +1,6 @@
+## Coleção do Postman
+
+[Baixar coleção do Postman](./postman/sua-colecao.postman_collection.json)
 ## Testes de carga com k6
 
 

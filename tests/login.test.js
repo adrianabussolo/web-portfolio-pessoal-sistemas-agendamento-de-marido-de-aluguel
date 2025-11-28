@@ -3,26 +3,29 @@ import { sleep } from 'k6';
 
 
 export const options = {
-  iterations: 30
-  };
+  iterations: 1
+};
 
 export default function () {
-    // teste aqui 
+  // Exibe a data atual no relatório
+  const hoje = new Date().toLocaleString('pt-BR');
+  console.log('Data do teste:', hoje);
+  // teste aqui 
   const url = 'http://localhost:3000/auth/login';
-    
-    const payload = JSON.stringify({
-      username: 'admin',
-      password: 'admin123'
-    });
 
-    const params = {
-        headers: {
+  const payload = JSON.stringify({
+    username: 'admin',
+    password: 'admin123'
+  });
+
+  const params = {
+    headers: {
       'Content-Type': 'application/json',
     },
   };
-    const resposta = http.post(url, payload, params);
+  const resposta = http.post(url, payload, params);
 
- 
-    sleep(1);
-    console.log(resposta);
+
+  sleep(1);
+  console.log(resposta);
 }
